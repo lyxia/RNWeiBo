@@ -5,36 +5,12 @@ import {
     StyleSheet,
 } from 'react-native'
 import {connect} from 'react-redux'
-import {get_token_info} from '../server/API'
-import {savaToken, removeToken} from '../actions/TokenAction'
+import {login} from '../actions/LoginAction'
 
 class Loading extends React.Component {
 
     componentDidMount() {
-        this.loadLocalStorage()
-    }
-
-    loadLocalStorage = async ()=>{
-        try {
-            await this.vaildToken()
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    vaildToken = async () => {
-        console.log('vaildToken')
-        //读取token
-        try {
-            const tokenInfo = await storage.load({key:'tokenInfo'})
-            console.log(`tokeninfo = ${tokenInfo}`)
-            const {access_token} = tokenInfo
-            const responseJson = await get_token_info(access_token)
-            this.props.savaToken({...responseJson, access_token:access_token})
-        } catch (error) {
-            console.log(error)
-            this.props.removeToken()
-        }
+        this.props.login()
     }
 
     render() {
@@ -57,8 +33,7 @@ const styles = StyleSheet.create({
 
 function makeDispatchToProps(dispatch) {
     return {
-        savaToken: (data)=>dispatch(savaToken(data)),
-        removeToken: ()=>dispatch(removeToken())
+        login: ()=>dispatch(login()),
     }
 }
 

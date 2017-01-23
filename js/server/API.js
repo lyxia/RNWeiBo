@@ -1,7 +1,7 @@
 import {getUrlWithPathAndParams} from '../utils/utils'
 import url from 'url'
-import {tokenInfo, removeToken} from '../actions/TokenAction'
-import {dispatch} from '../stores/configureStore'
+import {dispatch, getState} from '../stores/configureStore'
+import {loginOut} from '../actions/LoginAction'
 
 const baseUrl = 'https://api.weibo.com/'
 const redirect_uri = 'https://api.weibo.com/oauth2/default.html'
@@ -53,10 +53,23 @@ export function get_token_info(token) {
 
 //------------------------------------------用户信息----------------------------
 const accountUrl = baseUrl + '2/account/'
-export function getUid() {
+export function getUid(access_token) {
   let path = accountUrl + 'get_uid.json'
   return sendGetRequest(path,{
-    access_token: tokenInfo.access_token
+    access_token
+  })
+}
+
+function getAccessToken() {
+  return getState().Login.userInfo.access_token
+}
+
+const userUrl = baseUrl + '2/users/'
+export function getUserInfo(access_token, uid) {
+  let path = userUrl + 'show.json'
+  return sendGetRequest(path,{
+    access_token,
+    uid
   })
 }
 
@@ -66,7 +79,7 @@ const statusesUrl = baseUrl + '2/statuses/'
 export function home_timeline(page, count) {
   let path = statusesUrl + 'home_timeline.json'
   return sendGetRequest(path,{
-    access_token: tokenInfo.access_token,
+    access_token: getAccessToken(),
     page: page,
     count: count
   })
@@ -76,7 +89,7 @@ export function home_timeline(page, count) {
 export function repost(id){
   let path = statusesUrl + 'repost.json'
   let url = getUrlWithPathAndParams(path,{
-    access_token: tokenInfo.access_token,
+    access_token: getAccessToken(),
     id
   })
   return sendPostRequest(url, {})
@@ -87,7 +100,7 @@ const favoritesUrl = baseUrl + '2/favorites/'
 function favorites_create(id) {
   let path = favoritesUrl + 'create.json'
   let url = getUrlWithPathAndParams(path, {
-    access_token: tokenInfo.access_token,
+    access_token: getAccessToken(),
     id
   })
   return sendPostRequest(url, {})
@@ -96,7 +109,7 @@ function favorites_create(id) {
 export function favorites_destroy(id) {
   let path = favoritesUrl + 'destroy.json'
   let url = getUrlWithPathAndParams(path,{
-    access_token: tokenInfo.access_token,
+    access_token: getAccessToken(),
     id
   })
   return sendPostRequest(url,{})
@@ -107,7 +120,7 @@ const commentsUrl = baseUrl + '2/comments/'
 export function comment_create(comment, id) {
   let path = commentsUrl + 'create.json'
   let url = getUrlWithPathAndParams(path,{
-    access_token: tokenInfo.access_token,
+    access_token: getAccessToken(),
     comment,
     id
   })
@@ -118,7 +131,7 @@ export function comment_create(comment, id) {
 export function comment_show(page, count, args){
   let path = commentsUrl + 'show.json'
   return sendGetRequest(path, {
-    access_token: tokenInfo.access_token,
+    access_token: getAccessToken(),
     page,
     count,
     id:args.id
@@ -163,7 +176,7 @@ async function request(url, options) {
     if(response.status != 200) {
       if(responseJson.error_code == 21332) {
         //token失效
-        dispatch(removeToken())
+        dispatch(loginOut())
         throw new APIError(responseJson.error, responseJson.error_code, responseJson)
       }
       throw new APIError(responseJson.error, responseJson.error_code, responseJson)

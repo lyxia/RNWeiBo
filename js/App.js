@@ -8,7 +8,7 @@ import LoginView from './pages/Login'
 import MainView from './pages/Main'
 import LoadingView from './pages/Loading'
 import {configureStore} from './stores/configureStore'
-import {AppStateCode} from './reducers/AppState'
+import {AppStateCode} from './reducers/Login'
 
 
 class Root extends React.Component {
@@ -31,8 +31,8 @@ class Root extends React.Component {
 function makeStateToProps(state) {
     console.log('root view controller')
     return {
-        isLogin: state.AppState == AppStateCode.LOGIN,
-        isLoading: state.AppState == AppStateCode.LOADING
+        isLogin: state.Login.status == AppStateCode.LOGIN,
+        isLoading: state.Login.status == AppStateCode.LOADING
     }
 }
 

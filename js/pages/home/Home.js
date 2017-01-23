@@ -11,6 +11,7 @@ import {home_timeline} from '../../server/API'
 import PageListRequest from '../../server/PageListRequest'
 import WBColor from '../../commons/WBColor'
 import CommentView from './Comment'
+import {connect} from 'react-redux'
 
 const styles = StyleSheet.create({
   root:{
@@ -18,7 +19,7 @@ const styles = StyleSheet.create({
   },
 })
 
-export default class Home extends React.Component {
+class Home extends React.Component {
   constructor(props) {
     super(props)
 
@@ -51,10 +52,18 @@ export default class Home extends React.Component {
     return (
       <View style={styles.root}>
         <Header
-          title = {Header.DefaultTitle("首页")}
+          title = {Header.DefaultTitle(this.props.userName)}
         />
         <ItemListView item={this._renderListItem()} listRequest={this.listRequest}/>
       </View>
     )
   }
 }
+
+function makeStateToProps(state) {
+  return {
+    userName: state.Login.userInfo.userInfo.screen_name
+  }
+}
+
+module.exports = connect(makeStateToProps)(Home)

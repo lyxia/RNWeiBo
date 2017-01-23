@@ -1,8 +1,8 @@
 import {combineReducers} from 'redux'
-import {AppState} from './AppState'
+import {Login} from './Login'
 import {Route} from './Route'
 
 module.exports = combineReducers({
-  AppState,
+  Login,
   Route
 })
