@@ -21,7 +21,7 @@
     "redux": "~3.6.0",
     "redux-logger": "~2.6.1",
     "redux-persist": "~3.2.2",
-    "redux-promis": "~3.6.0",
+    "redux-promise": "~3.6.0",
     "redux-thunk": "~2.1.0",
     "url": "~0.11.0",
     "weibo": "^0.6.11"
