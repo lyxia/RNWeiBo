@@ -5,8 +5,8 @@ import {loginOut} from '../actions/LoginAction'
 
 const baseUrl = 'https://api.weibo.com/'
 const redirect_uri = 'https://api.weibo.com/oauth2/default.html'
-const client_id = '2616702839'
-const client_secret ='f9367dbf58e427f1d270013aa83e8782'
+const client_id = '3947421575'
+const client_secret ='e3e5c33f97b4a24ab19e5159f330854c'
 
 const oauth2Url = baseUrl + 'oauth2/'
 //获取授权url
@@ -51,6 +51,15 @@ export function get_token_info(token) {
   return sendPostRequest(url, {})
 }
 
+//--------------------------------公用数据----------------
+function getCurAccessToken() {
+  return getState().Login.userInfo.access_token
+}
+
+function getCurUid() {
+  return getState().Login.userInfo.uid
+}
+
 //------------------------------------------用户信息----------------------------
 const accountUrl = baseUrl + '2/account/'
 export function getUid(access_token) {
@@ -58,10 +67,6 @@ export function getUid(access_token) {
   return sendGetRequest(path,{
     access_token
   })
-}
-
-function getAccessToken() {
-  return getState().Login.userInfo.access_token
 }
 
 const userUrl = baseUrl + '2/users/'
@@ -73,13 +78,32 @@ export function getUserInfo(access_token, uid) {
   })
 }
 
+const remindUrl = baseUrl +'2/remind/'
+export function unread_count() {
+  let path = remindUrl + 'unread_count.json'
+  return sendGetRequest(path,{
+    access_token: getCurAccessToken(),
+    uid: getCurUid()
+  })
+}
+
+const friendshipsUrl = baseUrl + '2/friendships/'
+export function friends() {
+  let path = friendshipsUrl + 'friends.json'
+  return sendGetRequest(path, {
+    access_token: getCurAccessToken(),
+    uid: getCurUid(),
+  })
+}
+
 //--------------------------------------------信息接口API------------------------------------------
+
 //获取主页列表信息
 const statusesUrl = baseUrl + '2/statuses/'
 export function home_timeline(page, count) {
   let path = statusesUrl + 'home_timeline.json'
   return sendGetRequest(path,{
-    access_token: getAccessToken(),
+    access_token: getCurAccessToken(),
     page: page,
     count: count
   })
@@ -100,7 +124,7 @@ const favoritesUrl = baseUrl + '2/favorites/'
 function favorites_create(id) {
   let path = favoritesUrl + 'create.json'
   let url = getUrlWithPathAndParams(path, {
-    access_token: getAccessToken(),
+    access_token: getCurAccessToken(),
     id
   })
   return sendPostRequest(url, {})
@@ -109,7 +133,7 @@ function favorites_create(id) {
 export function favorites_destroy(id) {
   let path = favoritesUrl + 'destroy.json'
   let url = getUrlWithPathAndParams(path,{
-    access_token: getAccessToken(),
+    access_token: getCurAccessToken(),
     id
   })
   return sendPostRequest(url,{})
@@ -120,7 +144,7 @@ const commentsUrl = baseUrl + '2/comments/'
 export function comment_create(comment, id) {
   let path = commentsUrl + 'create.json'
   let url = getUrlWithPathAndParams(path,{
-    access_token: getAccessToken(),
+    access_token: getCurAccessToken(),
     comment,
     id
   })
@@ -131,7 +155,7 @@ export function comment_create(comment, id) {
 export function comment_show(page, count, args){
   let path = commentsUrl + 'show.json'
   return sendGetRequest(path, {
-    access_token: getAccessToken(),
+    access_token: getCurAccessToken(),
     page,
     count,
     id:args.id

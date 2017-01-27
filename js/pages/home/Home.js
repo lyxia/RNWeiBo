@@ -12,6 +12,8 @@ import PageListRequest from '../../server/PageListRequest'
 import WBColor from '../../commons/WBColor'
 import CommentView from './Comment'
 import {connect} from 'react-redux'
+import {setEmptyUnReadForCategory} from '../../actions/UnReadAction'
+import {autorun} from 'mobx'
 
 const styles = StyleSheet.create({
   root:{
@@ -24,10 +26,15 @@ class Home extends React.Component {
     super(props)
 
     this.listRequest = new PageListRequest(home_timeline)
+
+    autorun(()=>{
+      if(this.listRequest.isRefresh){
+        this.props.setEmptyUnReadForStatus()
+      }
+    })
   }
 
   _showItemDetail = (data)=>{
-    console.log(`_showItemDetail = ${data}`)
     this.props.navigator.push({
       component:CommentView,
       args:{
@@ -48,7 +55,6 @@ class Home extends React.Component {
   }
 
   render(){
-    console.log('render Home');
     return (
       <View style={styles.root}>
         <Header
@@ -66,4 +72,10 @@ function makeStateToProps(state) {
   }
 }
 
-module.exports = connect(makeStateToProps)(Home)
+function makeDispatchToProps(dispatch) {
+  return {
+    setEmptyUnReadForStatus:()=>dispatch(setEmptyUnReadForCategory('status'))
+  }
+}
+
+module.exports = connect(makeStateToProps, makeDispatchToProps)(Home)

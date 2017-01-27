@@ -15,9 +15,12 @@ import LinkMedia from './LinkMedia'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {observer} from 'mobx-react/native'
 import {action} from 'mobx'
+import {formatDateToCur} from '../utils/utils'
 
 class Header extends React.Component {
     render() {
+        const date = new Date(this.props.data.created_at)
+        const format = formatDateToCur(date)
         return (
             <View style={styles.header}>
                 <View style={styles.headerUserInfo}>
@@ -27,7 +30,7 @@ class Header extends React.Component {
                             <Text style={styles.headerUserName}>{this.props.data.screen_name}</Text>
                         </View>
                         <View>
-                            <Text style={[styles.headerUserSource, styles.iconColor]}>{this.props.data.location}</Text>
+                            <Text style={[styles.headerUserSource, styles.iconColor]}>{format}</Text>
                         </View>
                     </View>
                 </View>

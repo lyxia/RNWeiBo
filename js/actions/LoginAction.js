@@ -23,6 +23,7 @@ export function login(code) {
         .catch((error)=>{
             console.log(error)
             //登陆失败
+            console.log('login error')
             removeUserInfo()
             dispatch({
                 type:ActionTypes.LOGIN_FAILURE
@@ -32,6 +33,7 @@ export function login(code) {
 }
 
 export function loginOut() {
+    console.log('login out')
     return (dispatch)=>{
         removeUserInfo()
         .then(()=>{

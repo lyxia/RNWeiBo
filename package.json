@@ -21,10 +21,11 @@
     "redux": "~3.6.0",
     "redux-logger": "~2.6.1",
     "redux-persist": "~3.2.2",
-    "redux-promise": "~3.6.0",
+    "redux-promise": "~0.5.3",
     "redux-thunk": "~2.1.0",
     "url": "~0.11.0",
-    "weibo": "^0.6.11"
+    "weibo": "^0.6.11",
+    "react-native-root-toast":"~1.0.3"
   },
   "devDependencies": {
     "babel-jest": "18.0.0",

@@ -21,6 +21,7 @@ import Header from '../../commons/Header'
 const styles = StyleSheet.create({
     root:{
         backgroundColor:WBColor.backgroundColor,
+        flex:1
     },
     sectionHeader:{
         height:47,
@@ -58,12 +59,13 @@ export default class Comment extends React.Component {
     }
 
     componentDidMount() {
-        console.log('comment did mount')
-        this.listRequest.refreshPage()
+        setTimeout(()=>{
+            this.listRequest.refreshPage()
+        }
+        , 400);
     }
 
     _showItemDetail = (data)=>{
-        console.log(`_showItemDetail = ${data}`)
         this.props.navigator.push({
         component:Comment,
         args:{
@@ -103,7 +105,6 @@ export default class Comment extends React.Component {
     }
 
     _renderRow = (rowData, sectionID, rowID)=>{
-        console.log(`render row = ${rowData}`)
         return (
             <ReplayItem data={rowData}/>
         )
@@ -132,20 +133,18 @@ export default class Comment extends React.Component {
     }
 
     render() {
-        console.log('render comment')
         const sectionData = {
             'comments':this.listRequest.data.slice()
         }
         this.dataSource = this.dataSource.cloneWithRowsAndSections(sectionData)
 
         return (
-            <View>
+            <View style={styles.root}>
                 <Header
                     left = {Header.DefaultLeft(()=>this.props.navigator.pop())}
                     title = {Header.DefaultTitle("微博正文")}
                 />
                 <ListView
-                    style={styles.root}
                     renderHeader = {this._renderHeader}
                     renderSectionHeader = {this._renderSectionHeader}
                     renderRow = {this._renderRow}

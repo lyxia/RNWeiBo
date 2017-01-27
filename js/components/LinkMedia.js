@@ -12,7 +12,6 @@ const styles = StyleSheet.create({
     column: {
         flex:1,
         marginTop:15,
-       // justifyContent:'flex-start'
     },
     row: {
         flexDirection:'row',
@@ -38,11 +37,12 @@ export default class LinkMedia extends React.Component {
                 )
             }
         }
+        let bmiddle_url = urls[i].thumbnail_pic.replace('thumbnail', 'bmiddle')
         return (
             <View style={styles.cell} key={i}>
                 <Image 
                     style={styles.image} 
-                    source={{uri:urls[i].thumbnail_pic}}
+                    source={{uri:bmiddle_url}}
                 />
             </View>
         )

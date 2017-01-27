@@ -18,7 +18,7 @@ export default class Header extends React.Component {
 
   render() {
     return (
-      <View style={styles.header}>
+      <View style={[styles.header, this.props.style]}>
         {this.props.left || <View/>}
         {this.props.title || <View/>}
         {this.props.right || <View/>}
@@ -27,10 +27,10 @@ export default class Header extends React.Component {
   }
 }
 
-Header.DefaultLeft = (onPress) => {
+Header.DefaultLeft = (onPress, icon=null) => {
     return (
         <TouchableOpacity onPress={onPress}>
-           <Icon name='angle-left' size={35}/>
+           {icon || <Icon name='angle-left' size={35}/>}
         </TouchableOpacity> 
     )
 }
@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
   header: {
     height:64,
     paddingTop:20,
+    paddingHorizontal: 15,
     backgroundColor:'white',
     borderBottomColor:WBColor.lineColor,
     borderBottomWidth: StyleSheet.hairlineWidth,

@@ -5,16 +5,16 @@ import {
   Text,
   StyleSheet
 } from 'react-native'
+import Header from '../../commons/Header'
 
 const styles = StyleSheet.create({
   root:{
     flex:1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    backgroundColor:'white'
   }
 })
 
-class Find extends React.Component {
+class Talk extends React.Component {
   constructor(props) {
     super(props)
   }
@@ -22,7 +22,11 @@ class Find extends React.Component {
   render(){
     return (
       <View style={styles.root}>
-        <Text>Find</Text>
+        <Header
+            left = {Header.DefaultLeft(()=>this.props.navigator.pop())}
+            title = {Header.DefaultTitle(this.props.userInfo.screen_name)}
+        />
+        <Text>Talk</Text>
       </View>
     )
   }
@@ -40,4 +44,4 @@ function makeDispatchToProps(dispatch) {
   }
 }
 
-module.exports = connect(makeStateToProps, makeDispatchToProps)(Find)
+module.exports = connect(makeStateToProps, makeDispatchToProps)(Talk)

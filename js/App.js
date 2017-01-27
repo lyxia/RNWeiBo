@@ -10,10 +10,8 @@ import LoadingView from './pages/Loading'
 import {configureStore} from './stores/configureStore'
 import {AppStateCode} from './reducers/Login'
 
-
 class Root extends React.Component {
     render() {
-        console.log('root view')
         if(this.props.isLoading) {
             //显示加载页面
             return <LoadingView/>;

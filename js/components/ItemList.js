@@ -55,9 +55,9 @@ export default class ItemList extends React.Component {
                 dataSource = {this.props.listRequest.dataSource}
                 renderRow = {(rowData, sectionID, rowID)=>this._renderRow(rowData, sectionID, rowID)}
                 enableEmptySections = {true}
-                //上拉
-                refreshControl = {this._renderRefreshControl()}
                 //下拉
+                refreshControl = {this._renderRefreshControl()}
+                //上拉
                 renderFooter = {()=>this._renderFooter()}
                 //页面滚动底部时，自动触发
                 onEndReached = {()=>this._onEndReached()}
